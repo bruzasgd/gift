@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Gallery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px 0 5px 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: url('img/background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            overflow: hidden;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            z-index: 1;
+        }
+        .gallery img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            animation: spin 5s linear infinite paused;
+            border: 5px solid white;
+        }
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+        .footer {
+            margin-top: auto;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            text-align: center;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="gallery">
+        <img src="img/benzinine-vejapjove-husqvarna-lc-140s-1.png" alt="Image 1">
+        <img src="img/benzinine-vejapjove-husqvarna-lc-140sp-2.png" alt="Image 2">
+        <img src="img/benzinine-vejapjove-husqvarna-lc-140sp-2.jpg" alt="Image 3">
+        <img src="img/benzinine-vejapjove-husqvarna-lc-140sp-1-1.png" alt="Image 4">
+    </div>
+
+    <div class="footer">
+        <p>&copy; <span id="year"></span> Aurimas Rūta Gražina Ernestas Justina Gediminas</p>
+    </div>
+
+    <script>
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            snowflake.style.left = `${Math.random() * 100}vw`;
+            snowflake.style.width = `${Math.random() * 10 + 5}px`;
+            snowflake.style.height = snowflake.style.width;
+            snowflake.style.animationDuration = `${Math.random() * 3 + 2}s`;
+            document.body.appendChild(snowflake);
+
+            setTimeout(() => {
+                snowflake.remove();
+            }, 5000);
+        }
+
+        setInterval(createSnowflake, 200);
+
+        // Set the current year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        const images = document.querySelectorAll('.gallery img');
+
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * max);
+        }
+
+        function spinRandomImage() {
+            const randomIndex = getRandomInt(images.length);
+            const randomImage = images[randomIndex];
+            randomImage.style.animationPlayState = 'running';
+
+            setTimeout(() => {
+                randomImage.style.animationPlayState = 'paused';
+                spinRandomImage();
+            }, 5000);
+        }
+
+        spinRandomImage();
+    </script>
+</body>
+</html>
